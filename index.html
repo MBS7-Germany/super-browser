@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>X-ULTRA SYSTEM | CLOUD PC BROWSER</title>
+    <script src="https://jsdelivr.net"></script>
+    <style>
+        :root { --neon: #00f2ff; --bg: #0a0a0b; }
+        body { background: var(--bg); color: white; font-family: sans-serif; margin: 0; text-align: center; }
+        .hero { padding: 100px 20px; }
+        .btn { background: var(--neon); color: black; padding: 15px 30px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; text-decoration: none; }
+        #browser-ui { display: none; height: 100vh; flex-direction: column; }
+        iframe { flex: 1; border: none; background: white; }
+    </style>
+</head>
+<body>
+
+<div id="landing">
+    <div class="hero">
+        <h1 style="color: var(--neon); font-size: 3rem;">X-ULTRA CORE</h1>
+        <p>Windows PC Performance auf deinem Xiaomi.</p>
+        <input type="email" id="email" placeholder="Deine E-Mail..." style="padding: 15px; width: 250px; border-radius: 5px; border: none;"><br><br>
+        <button class="btn" onclick="checkAccess()">SYSTEM STARTEN</button>
+        <p>Noch kein Abo? <a href="DEIN_STRIPE_ODER_KRYPTO_LINK" style="color: var(--neon);">Hier freischalten</a></p>
+    </div>
+</div>
+
+<div id="browser-ui">
+    <div style="background: #111; padding: 10px; display: flex; gap: 10px;">
+        <input type="text" id="url" placeholder="URL eingeben..." style="flex: 1; padding: 10px;">
+        <button class="btn" onclick="surf()">GO</button>
+    </div>
+    <iframe id="screen"></iframe>
+</div>
+
+<script>
+    const RENDER_URL = "https://onrender.com";
+
+    async function checkAccess() {
+        const email = document.getElementById('email').value;
+        // Automatische Abfrage beim Server
+        const res = await fetch(`${RENDER_URL}/tunnel?email=${email}&url=https://google.com`);
+        if (res.status === 200) {
+            document.getElementById('landing').style.display = 'none';
+            document.getElementById('browser-ui').style.display = 'flex';
+        } else {
+            alert("Abo nicht aktiv. Bitte erst bezahlen!");
+        }
+    }
+
+    function surf() {
+        const email = document.getElementById('email').value;
+        const url = encodeURIComponent(document.getElementById('url').value);
+        document.getElementById('screen').src = `${RENDER_URL}/tunnel?email=${email}&url=${url}`;
+    }
+</script>
+</body>
+</html>
