@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>X-ULTRA CORE</title>
+    <style>
+        body { background: #0a0a0b; color: #00f2ff; font-family: sans-serif; text-align: center; margin: 0; display: flex; flex-direction: column; height: 100vh; }
+        .hero { padding: 50px; flex: 1; }
+        .btn { background: #00f2ff; color: black; padding: 15px 30px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; }
+        #browser-ui { display: none; height: 100vh; flex-direction: column; }
+        iframe { flex: 1; border: none; background: white; width: 100%; }
+        input { padding: 12px; border-radius: 5px; border: 1px solid #00f2ff; background: #000; color: #00f2ff; margin: 10px; }
+    </style>
+</head>
+<body>
+    <div id="landing">
+        <div class="hero">
+            <h1>X-ULTRA CORE</h1>
+            <p>Windows PC Performance auf deinem Xiaomi</p>
+            <input type="email" id="email" placeholder="E-Mail (test@user.com)">
+            <button class="btn" onclick="checkAccess()">SYSTEM STARTEN</button>
+        </div>
+    </div>
+    <div id="browser-ui">
+        <div style="background: #111; padding: 10px; display: flex;">
+            <input type="text" id="url" placeholder="google.de" style="flex: 1;">
+            <button class="btn" onclick="surf()">GO</button>
+        </div>
+        <iframe id="screen"></iframe>
+    </div>
+    <script>
+        const RENDER_URL = "https://onrender.com";
+        async function checkAccess() {
+            const email = document.getElementById('email').value;
+            try {
+                const res = await fetch(`${RENDER_URL}/tunnel?email=${email}&url=https://bing.com`);
+                if (res.ok) {
+                    document.getElementById('landing').style.display = 'none';
+                    document.getElementById('browser-ui').style.display = 'flex';
+                    surf();
+                } else { alert("Abo nicht aktiv!"); }
+            } catch (e) { alert("Server startet noch... bitte 30 Sek. warten."); }
+        }
+        function surf() {
+            const email = document.getElementById('email').value;
+            let target = document.getElementById('url').value || "https://bing.com";
+            if(!target.startsWith('http')) target = 'https://' + target;
+            document.getElementById('screen').src = `${RENDER_URL}/tunnel?email=${email}&url=${encodeURIComponent(target)}`;
+        }
+    </script>
+</body>
+</html>
